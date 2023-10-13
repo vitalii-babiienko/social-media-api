@@ -10,6 +10,11 @@ from social_media.models import (
     Hashtag,
     Post,
 )
+from social_media.paginations import (
+    ProfilePagination,
+    HashtagPagination,
+    PostPagination,
+)
 from social_media.permissions import (
     IsProfileOwnerOrReadOnly,
     IsPostOwnerOrReadOnly,
@@ -57,6 +62,7 @@ class ProfileViewSet(UploadImageMixin, viewsets.ModelViewSet):
     )
     serializer_class = ProfileSerializer
     permission_classes = (IsAuthenticated, IsProfileOwnerOrReadOnly)
+    pagination_class = ProfilePagination
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -135,6 +141,7 @@ class HashtagViewSet(viewsets.ModelViewSet):
     queryset = Hashtag.objects.all()
     serializer_class = HashtagSerializer
     permission_classes = (IsAuthenticated,)
+    pagination_class = HashtagPagination
 
 
 class PostViewSet(UploadImageMixin, viewsets.ModelViewSet):
@@ -153,6 +160,7 @@ class PostViewSet(UploadImageMixin, viewsets.ModelViewSet):
     )
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticated, IsPostOwnerOrReadOnly)
+    pagination_class = PostPagination
 
     def get_serializer_class(self):
         if self.action in (
