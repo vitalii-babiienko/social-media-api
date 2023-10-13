@@ -1,4 +1,5 @@
 from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
@@ -63,6 +64,12 @@ class ProfileViewSet(UploadImageMixin, viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     permission_classes = (IsAuthenticated, IsProfileOwnerOrReadOnly)
     pagination_class = ProfilePagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = (
+        "username",
+        "first_name",
+        "last_name",
+    )
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -142,6 +149,8 @@ class HashtagViewSet(viewsets.ModelViewSet):
     serializer_class = HashtagSerializer
     permission_classes = (IsAuthenticated,)
     pagination_class = HashtagPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ("name",)
 
 
 class PostViewSet(UploadImageMixin, viewsets.ModelViewSet):
@@ -161,6 +170,13 @@ class PostViewSet(UploadImageMixin, viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticated, IsPostOwnerOrReadOnly)
     pagination_class = PostPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = (
+        "title",
+        "created_at",
+        "author",
+        "hashtags",
+    )
 
     def get_serializer_class(self):
         if self.action in (
