@@ -2,7 +2,6 @@ from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -82,14 +81,6 @@ class ProfileViewSet(UploadImageMixin, viewsets.ModelViewSet):
             return ProfileImageSerializer
 
         return ProfileSerializer
-
-    def perform_create(self, serializer):
-        if hasattr(self.request.user, "profile"):
-            raise ValidationError(
-                f"You already have a profile with the "
-                f"username '{self.request.user.profile}'!"
-            )
-        serializer.save(user=self.request.user)
 
     @action(
         methods=["POST"],
@@ -196,9 +187,6 @@ class PostViewSet(UploadImageMixin, viewsets.ModelViewSet):
             return CommentAddSerializer
 
         return PostSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user.profile)
 
     @action(
         methods=["POST"],

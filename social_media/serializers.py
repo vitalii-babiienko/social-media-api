@@ -19,6 +19,11 @@ class ProfileSerializer(serializers.ModelSerializer):
             "bio",
         )
 
+    def validate(self, data):
+        user = self.context["request"].user
+        data["user"] = user
+        return data
+
 
 class ProfileListSerializer(serializers.ModelSerializer):
     followers_count = serializers.IntegerField(read_only=True)
@@ -118,6 +123,11 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at",
             "hashtags",
         )
+
+    def validate(self, data):
+        profile = self.context["request"].user.profile
+        data["author"] = profile
+        return data
 
 
 class PostListSerializer(serializers.ModelSerializer):
