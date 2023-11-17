@@ -6,12 +6,15 @@ The RESTful API is designed to manage post-related information and operations. T
 
 **Docker must already be installed!**
 
-Create a **.env** file by copying the **.env.sample** file and populate it with the required values.
-
 ```shell
 git clone https://github.com/vitalii-babiienko/social-media-api.git
 cd social-media-api
-docker-compose up
+```
+
+Create a **.env** file by copying the **.env.sample** file and populate it with the required values.
+
+```shell
+docker-compose up --build
 ```
 
 ## Get access
