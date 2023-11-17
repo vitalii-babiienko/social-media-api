@@ -1,5 +1,6 @@
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -49,6 +50,7 @@ class UploadImageMixin:
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@extend_schema(tags=["Profiles"])
 class ProfileViewSet(UploadImageMixin, viewsets.ModelViewSet):
     queryset = (
         Profile.objects
@@ -135,6 +137,7 @@ class ProfileViewSet(UploadImageMixin, viewsets.ModelViewSet):
         )
 
 
+@extend_schema(tags=["Hashtags"])
 class HashtagViewSet(viewsets.ModelViewSet):
     queryset = Hashtag.objects.all()
     serializer_class = HashtagSerializer
@@ -144,6 +147,7 @@ class HashtagViewSet(viewsets.ModelViewSet):
     filterset_fields = ("name",)
 
 
+@extend_schema(tags=["Posts"])
 class PostViewSet(UploadImageMixin, viewsets.ModelViewSet):
     queryset = (
         Post.objects
